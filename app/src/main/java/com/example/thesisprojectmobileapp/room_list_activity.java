@@ -12,6 +12,7 @@ public class room_list_activity extends AppCompatActivity {
     private Button btnRoomReserve312;
     private Button btnRoomReserve313;
     private Button btnRoomReserve314;
+    private Button btnProfile;
 
 
     @Override
@@ -42,10 +43,23 @@ public class room_list_activity extends AppCompatActivity {
                 openReserve();
             }
         });
+
+        btnProfile = (Button) findViewById(R.id.btnProfile);
+        btnProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openProfile();
+            }
+        });
     }
 
     public void openReserve() {
         Intent intent = new Intent(this, ReserveActivity.class);
+        startActivity(intent);
+    }
+
+    public void openProfile() {
+        Intent intent = new Intent(this, Profile_Activity.class);
         startActivity(intent);
     }
 }
