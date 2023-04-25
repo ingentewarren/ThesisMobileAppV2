@@ -14,7 +14,9 @@
     <string-array name="activity_options">
         <item>Lecture</item>
         <item>Examination/Quiz</item>
-        <item>Project Making</item>
+        <item>Laboratory</item>
+        <item>Meeting</item>
+
     </string-array>
 
 
