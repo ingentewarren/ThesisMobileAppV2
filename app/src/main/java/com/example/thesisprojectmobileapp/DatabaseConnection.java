@@ -8,7 +8,7 @@ public class DatabaseConnection {
 
     public void connect() {
         try {
-            String url = "jdbc:mysql://192.168.101.13:3306/mydatabase";
+            String url = "jdbc:mysql://192.168.0.41:3306/thesis";
             String username = "myusername";
             String password = "mypassword";
             conn = DriverManager.getConnection(url, username, password);
@@ -45,9 +45,9 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://192.168.101.13:3306/thesis",
-                    "root",
-                    "123456789"
+                    "jdbc:mysql://192.168.0.41:3306/thesis",
+                    "newuser",
+                    "12345678"
             );
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
