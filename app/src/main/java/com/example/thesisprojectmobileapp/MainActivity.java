@@ -1,28 +1,32 @@
 package com.example.thesisprojectmobileapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Button btnSignIn;
-
-    private EditText etUsername, etPassword;
-    private Button btnLogin;
+    TextInputEditText editTextEmail, editTextPassword;
+    Button btnLogin;
+    FirebaseAuth mAuth;
 
 
 
@@ -31,67 +35,46 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       /* btnSignIn = (Button) findViewById(R.id.btn_signIn);
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openSignIn();
-            }
-        });*/
+        mAuth = FirebaseAuth.getInstance();
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        btnLogin = findViewById(R.id.btn_SignIn);
 
 
-        etUsername = findViewById(R.id.editTextUsername);
-        etPassword = findViewById(R.id.editTextPassword);
-        btnLogin = findViewById(R.id.btn_signIn);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String username = etUsername.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+            public void onClick(View view) {
+                String email, password;
+                email = String.valueOf(editTextEmail.getText());
+                password = String.valueOf(editTextPassword.getText());
 
-                if (TextUtils.isEmpty(username)) {
-                    etUsername.setError("Please enter your username");
+                if (TextUtils.isEmpty(email)){
+                    Toast.makeText(MainActivity.this, "Enter email", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)) {
-                    etPassword.setError("Please enter your password");
+                if (TextUtils.isEmpty(password)){
+                    Toast.makeText(MainActivity.this, "Enter password", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // create an instance of the DatabaseConnection class
-                DatabaseConnection dbConn = new DatabaseConnection();
-
-                // connect to the database
-                Connection conn = dbConn.getConnection();
-
-                if (conn != null) {
-                    try {
-                        Statement stmt = conn.createStatement();
-                        ResultSet rs = stmt.executeQuery("SELECT * FROM mobile_user WHERE username = '" + username + "' AND password = '" + password + "'");
-                        if (rs.next()) {
-                            // login successful
-                            Intent intent = new Intent(MainActivity.this, room_list_activity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // login failed
-                            Toast.makeText(MainActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Failed to connect to the database", Toast.LENGTH_SHORT).show();
-                }
+                //Sign in to Firebase Database
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(MainActivity.this, "Login successful.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), room_list_activity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
-    }
-
-
-    public void openSignIn() {
-        Intent intent = new Intent(this, room_list_activity.class);
-        startActivity(intent);
     }
 }
