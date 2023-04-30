@@ -22,7 +22,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="362dp"
-        android:layout_height="508dp"
+        android:layout_height="580dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/round_corners_background"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
+            android:hint="Full Name"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -54,11 +55,11 @@
             app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
         <TextView
-            android:id="@+id/textview_date"
+            android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Current Date"
+            android:hint="Current Date"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -70,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Time start chosen here"
+            android:hint="Time Start"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -91,16 +92,41 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewTimeStart" />
 
         <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:text="Subject Code"
+            android:textColor="#3F51B5"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTimeEnd" />
+
+        <TextView
             android:id="@+id/textViewTimeEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Time end chosen here"
+            android:hint="Time End"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
+        <TextView
+            android:id="@+id/textViewSubjectCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:hint="Subject Code"
+            android:textColor="#3F51B5"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
             android:id="@+id/textView27"
@@ -120,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text=" 314 (from databse Here)"
+            android:hint="Room Number"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -151,14 +177,14 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_date" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewDate" />
 
         <TextView
             android:id="@+id/textViewEvent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:text="Event Chosen"
+            android:hint="Event"
             android:textColor="#3F51B5"
             android:textSize="20sp"
             android:textStyle="bold"

@@ -41,7 +41,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
 
         // Find the EditText view by its ID
-        TextView textViewDate = findViewById(R.id.textview_date);
+        TextView textViewDate = findViewById(R.id.textViewDate);
 
         // Get the current date and format it as "yyyy-MM-dd"
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -59,6 +59,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         TextView textViewEvent = findViewById(R.id.textViewEvent);
         TextView textViewTimeStart = findViewById(R.id.textViewTimeStart);
         TextView textViewTimeEnd = findViewById(R.id.textViewTimeEnd);
+        TextView textViewSubjectCode = findViewById(R.id.textViewSubjectCode);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -67,31 +68,38 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             String event = extras.getString("event");
             String timeStart = extras.getString("timeStart");
             String timeEnd = extras.getString("timeEnd");
+            String subjectCode = extras.getString("subjectCode");
 
             textViewFullName.setText(fullName);
             textViewRoomNumber.setText(roomNumber);
             textViewEvent.setText(event);
             textViewTimeStart.setText(timeStart);
             textViewTimeEnd.setText(timeEnd);
+            textViewSubjectCode.setText(subjectCode);
+
         }
 
 
         DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference().child("Room");
 
         // Find the views by their IDs
+        textViewDate = findViewById(R.id.textViewDate);
         textViewFullName = findViewById(R.id.textViewFullName);
         textViewRoomNumber = findViewById(R.id.textViewRoomNumber);
         textViewEvent = findViewById(R.id.textViewEvent);
         textViewTimeStart = findViewById(R.id.textViewTimeStart);
         textViewTimeEnd = findViewById(R.id.textViewTimeEnd);
+        textViewSubjectCode = findViewById(R.id.textViewSubjectCode);
         btnConfirm = findViewById(R.id.btnConfirm);
 
         // Get the values from the TextViews
+        String date = textViewDate.getText().toString();
         String fullName = textViewFullName.getText().toString();
         String roomNumber = textViewRoomNumber.getText().toString();
         String event = textViewEvent.getText().toString();
         String timeStart = textViewTimeStart.getText().toString();
         String timeEnd = textViewTimeEnd.getText().toString();
+        String subjectCode = textViewSubjectCode.getText().toString();
 
         // Add an OnClickListener to the "Confirm" button
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -101,13 +109,15 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
                 // Create a new HashMap to store the data
                 HashMap<String, Object> reservationData = new HashMap<>();
+                reservationData.put("Date", date);
                 reservationData.put("FullName", fullName);
                 reservationData.put("Event", event);
                 reservationData.put("TimeStart", timeStart);
                 reservationData.put("TimeEnd", timeEnd);
+                reservationData.put("SubjectCode", subjectCode);
 
                 // Write the data to the "Reserve" node
-                roomRef.child("Room3").child("Reserve").setValue(reservationData)
+                roomRef.child("Room" + roomNumber).child("Reserve").setValue(reservationData)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

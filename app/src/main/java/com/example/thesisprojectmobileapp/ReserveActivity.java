@@ -9,7 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -19,6 +23,8 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
     private EditText editTextDate;
     private Button btnSubmit;
     private String roomNumber;
+    private DatabaseReference mDatabaseRef;
+    private ArrayList<String> mRoomNumbersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +44,14 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         // Set the current date as the text of the EditText
         editTextDate.setText(currentDate);
 
+
+        //List of Rooms
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Room");
+
+
+
         //Submit Button
         btnSubmit = (Button) findViewById(R.id.btn_submit);
-
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,12 +62,14 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 Spinner spinnerEvent = findViewById(R.id.spinnerEvent);
                 EditText editTextTimeStart = findViewById(R.id.editTextTimeStart);
                 EditText editTextTimeEnd = findViewById(R.id.editTextTimeEnd);
+                EditText editTextSubjectCode = findViewById(R.id.editTextSubjectCode);
 
                 String fullName = editTextName.getText().toString();
                 String roomNumber = spinnerRoomNumber.getSelectedItem().toString();
                 String event = spinnerEvent.getSelectedItem().toString();
                 String timeStart = editTextTimeStart.getText().toString();
                 String timeEnd = editTextTimeEnd.getText().toString();
+                String subjectCode = editTextSubjectCode.getText().toString();
 
                 // Create an intent to start the confirmation activity and pass the user's name
                 Intent intent = new Intent(ReserveActivity.this, ReserveConfirmation_activity.class);
@@ -65,6 +78,7 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 intent.putExtra("event", event);
                 intent.putExtra("timeStart", timeStart);
                 intent.putExtra("timeEnd", timeEnd);
+                intent.putExtra("subjectCode", subjectCode);
                 startActivity(intent);
             }
         });

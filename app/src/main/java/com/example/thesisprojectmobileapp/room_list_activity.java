@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class room_list_activity extends AppCompatActivity {
 
     private Button btnRoomReserve;
@@ -29,13 +32,15 @@ public class room_list_activity extends AppCompatActivity {
     private TextView textViewRoom1;
     private TextView textViewRoom2;
     private TextView textViewRoom3;
+    private TextView textViewRoom4;
+    private TextView textViewRoom5;
+    private TextView textViewRoom6;
     private TextView textViewStatus1;
     private TextView textViewStatus2;
     private TextView textViewStatus3;
-
-
-
-
+    private TextView textViewStatus4;
+    private TextView textViewStatus5;
+    private TextView textViewStatus6;
 
 
 
@@ -54,29 +59,30 @@ public class room_list_activity extends AppCompatActivity {
         });
 
 
-
+       // Features to be added soon.
         btnProfile = (Button) findViewById(R.id.btnProfile);
-        btnSeeBooking = (Button) findViewById(R.id.btnSeeBooking);
-        btnBookingHistory = (Button) findViewById(R.id.btnSeeBooking);
+        btnBookingHistory = (Button) findViewById(R.id.btnBookingHistory);
 
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(room_list_activity.this, "Feature Comming Soon", Toast.LENGTH_SHORT).show();
+                Toast.makeText(room_list_activity.this, "Feature Coming Soon", Toast.LENGTH_SHORT).show();
             }
         });
-
-        btnSeeBooking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(room_list_activity.this, "Feature Comming Soon", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         btnBookingHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(room_list_activity.this, "Feature Comming Soon", Toast.LENGTH_SHORT).show();
+                Toast.makeText(room_list_activity.this, "Feature Coming Soon", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //See Booking
+        btnSeeBooking = (Button) findViewById(R.id.btnSeeBooking);
+        btnSeeBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(room_list_activity.this, BookingListActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -94,57 +100,128 @@ public class room_list_activity extends AppCompatActivity {
         textViewRoom1 = findViewById(R.id.textViewRoom1);
         textViewRoom2 = findViewById(R.id.textViewRoom2);
         textViewRoom3 = findViewById(R.id.textViewRoom3);
+        textViewRoom4 = findViewById(R.id.textViewRoom4);
+        textViewRoom5 = findViewById(R.id.textViewRoom5);
+        textViewRoom6 = findViewById(R.id.textViewRoom6);
         textViewStatus1 = findViewById(R.id.textViewStatus1);
         textViewStatus2 = findViewById(R.id.textViewStatus2);
         textViewStatus3 = findViewById(R.id.textViewStatus3);
+        textViewStatus4 = findViewById(R.id.textViewStatus4);
+        textViewStatus5 = findViewById(R.id.textViewStatus5);
+        textViewStatus6 = findViewById(R.id.textViewStatus6);
 
         // Add a ValueEventListener to listen for changes to the data at the "Room" node
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get the message from the "room1" node
-                String room1 = dataSnapshot.child("Room1").child("Room Number").getValue(String.class);
-                String room2 = dataSnapshot.child("Room2").child("Room Number").getValue(String.class);
-                String room3 = dataSnapshot.child("Room3").child("Room Number").getValue(String.class);
-                Boolean roomStatus1 = dataSnapshot.child("Room1").child("Availability").getValue(Boolean.class);
-                Boolean roomStatus2 = dataSnapshot.child("Room2").child("Availability").getValue(Boolean.class);
-                Boolean roomStatus3 = dataSnapshot.child("Room3").child("Availability").getValue(Boolean.class);
+                // Get the String and Bool from the "room1" node
+                List<Integer> numberList = new ArrayList<>();
 
+                for (int i = 1; i <= 10; i++) {
+                    if (dataSnapshot.child("Room" + i).exists()) {
+                        numberList.add(i);
+                        switch (i) {
+                            case 1:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom1.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus1.setText("Vacant");
+                                        textViewStatus1.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus1.setText("Occupied");
+                                        textViewStatus1.setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
+                            case 2:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom2.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus2.setText("Vacant");
+                                        textViewStatus2.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus2.setText("Occupied");
+                                        textViewStatus2.setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
+                            case 3:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom3.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus3.setText("Vacant");
+                                        textViewStatus3.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus3.setText("Occupied");
+                                        textViewStatus3.setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
+                            case 4:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom4.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus4.setText("Vacant");
+                                        textViewStatus4.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus4.setText("Occupied");
+                                        textViewStatus4.setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
 
+                            case 5:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom5.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus5.setText("Vacant");
+                                        textViewStatus5.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus5.setText("Occupied");
+                                        textViewStatus5.setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
 
-                textViewRoom1.setText(room1);
-                textViewRoom2.setText(room2);
-                textViewRoom3.setText(room3);
-
-                if (roomStatus1) {
-                    textViewStatus1.setText("Vacant");
-                    textViewStatus1.setTextColor(Color.GREEN);
-                } else {
-                    textViewStatus1.setText("Occupied");
-                    textViewStatus1.setTextColor(Color.RED);
+                            case 6:
+                                if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
+                                    Integer roomNumber = dataSnapshot.child("Room" + i).child("Room Number").getValue(Integer.class);
+                                    textViewRoom6.setText(String.valueOf(roomNumber));
+                                }
+                                if(dataSnapshot.child("Room" + i).child("Availability").exists()) {
+                                    Boolean roomStatus = dataSnapshot.child("Room" + i).child("Availability").getValue(Boolean.class);
+                                    if (roomStatus) {
+                                        textViewStatus6.setText("Vacant");
+                                        textViewStatus6.setTextColor(Color.GREEN);
+                                    } else {
+                                        textViewStatus6.setText("Occupied");
+                                        textViewStatus6 .setTextColor(Color.RED);
+                                    }
+                                }
+                                break;
+                        }
+                    }
                 }
-
-                if (roomStatus2) {
-                    textViewStatus2.setText("Vacant");
-                    textViewStatus2.setTextColor(Color.GREEN);
-                } else {
-                    textViewStatus2.setText("Occupied");
-                    textViewStatus2.setTextColor(Color.RED);
-                }
-
-                if (roomStatus3) {
-                    textViewStatus3.setText("Vacant");
-                    textViewStatus3.setTextColor(Color.GREEN);
-                } else {
-                    textViewStatus3.setText("Occupied");
-                    textViewStatus3.setTextColor(Color.RED);
-                }
-
-
-
-
-
-
 
             }
 
