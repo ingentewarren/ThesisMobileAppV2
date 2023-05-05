@@ -4,41 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DFE5F8"
     tools:context=".room_list_activity">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="411dp"
+        android:layout_height="192dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollViewList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.007"
+        app:srcCompat="@drawable/gradient_bg" />
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="196dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
         android:text="WELCOME!"
-        android:textColor="#2196F3"
-        android:textSize="20sp"
+        android:textColor="#ffff"
+        android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="List of Rooms"
-        android:textColor="#2196F3"
-        android:textSize="24sp"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSeeBooking"
+        android:layout_width="165dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/rounded_white"
+        android:drawableStart="@drawable/baseline_ad_units_24"
+        android:elevation="20dp"
+        android:padding="15dp"
+        android:text="See Booking"
+        android:textColor="#3E4761"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnBookingHistory"
+        android:layout_width="165dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/rounded_white"
+        android:drawableStart="@drawable/baseline_history_edu_24"
+        android:text="Reserve History"
+        android:textColor="#3E4761"
+        android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/info_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnRoomReserve"
+        android:layout_width="155dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_corners_background"
+        android:text="Reserve Room"
+        android:textColor="#ffff"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRoomReserve" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBookingHistory" />
 
     <ScrollView
         android:id="@+id/scrollViewList"
-        android:layout_width="343dp"
-        android:layout_height="wrap_content"
+        android:layout_width="376dp"
+        android:layout_height="424dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/round_corners_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10">
 
@@ -47,10 +105,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
+                android:background="@drawable/rounded_white"
+                android:gravity="center"
                 android:orientation="horizontal">
+
 
                 <TextView
                     android:id="@+id/textViewRoom1"
@@ -58,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="No Data"
+
                     android:textAlignment="center"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -72,11 +135,24 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_white"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -99,11 +175,25 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_white"
+
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -126,11 +216,24 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_white"
+
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -153,11 +256,23 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_white"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -180,11 +295,24 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_white"
+
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -207,6 +335,15 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/baseline_schedule_24"
+                    android:textColor="#fff" />
+
             </LinearLayout>
 
             <!-- Add more layouts and content here -->
@@ -215,45 +352,18 @@
 
     </ScrollView>
 
-    <Button
-        android:id="@+id/btnSeeBooking"
+    <TextView
+        android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        android:text="See Booking"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <Button
-        android:id="@+id/btnBookingHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Booking History"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-    <Button
-        android:id="@+id/btnProfile"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/info_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnRoomReserve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:text="Reserve Room"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBookingHistory" />
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="144dp"
+        android:text="Rooms"
+        android:textColor="#3E4761"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnRoomReserve"
+        app:layout_constraintTop_toBottomOf="@+id/btnSeeBooking" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

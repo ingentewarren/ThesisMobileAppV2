@@ -4,18 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DFE5F8"
     tools:context=".ReserveActivity">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/baseline_arrow_back_24"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_width="294dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
         android:text="Reserve Room"
         android:textColor="#2196F3"
-        android:textSize="20sp"
+        android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,13 +131,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTimeStart" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_submit"
         android:layout_width="299dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/round_corners_background"
         android:text="Submit"
+        android:textColor="#ffff"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSubjectCode" />
 
@@ -133,11 +150,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/rounded_white"
         android:ems="10"
         android:hint="Full Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -147,11 +165,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/rounded_white"
         android:ems="10"
         android:hint="Subject Code"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -163,6 +182,7 @@
         android:layout_marginTop="4dp"
         android:entries="@array/room_list"
         android:minHeight="48dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -172,11 +192,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/rounded_white"
         android:ems="10"
         android:hint="Enter Time Start"
         android:inputType="time"
         android:minHeight="48dp"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
@@ -186,11 +207,12 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/rounded_white"
         android:ems="10"
         android:hint="Enter Time End"
         android:inputType="time"
         android:minHeight="48dp"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
@@ -200,12 +222,14 @@
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
-        android:backgroundTint="#2196F3"
+        android:background="@drawable/rounded_white"
         android:ems="10"
         android:hint="Date"
         android:inputType="date"
         android:minHeight="48dp"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -215,6 +239,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
         android:entries="@array/activity_options"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
