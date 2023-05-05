@@ -59,6 +59,7 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get the user's name from the EditText view
+                EditText editTextDate = findViewById(R.id.editTextDate);
                 EditText editTextName = findViewById(R.id.editText_fullname);
                 Spinner spinnerRoomNumber = findViewById(R.id.spinnerRoomNumber);
                 Spinner spinnerEvent = findViewById(R.id.spinnerEvent);
@@ -66,6 +67,7 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 EditText editTextTimeEnd = findViewById(R.id.editTextTimeEnd);
                 EditText editTextSubjectCode = findViewById(R.id.editTextSubjectCode);
 
+                String date = editTextDate.getText().toString();
                 String fullName = editTextName.getText().toString();
                 String roomNumber = spinnerRoomNumber.getSelectedItem().toString();
                 String event = spinnerEvent.getSelectedItem().toString();
@@ -80,6 +82,7 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 } else {
                     // Create an intent to start the confirmation activity and pass the user's data
                     Intent intent = new Intent(ReserveActivity.this, ReserveConfirmation_activity.class);
+                    intent.putExtra("date", date);
                     intent.putExtra("fullName", fullName);
                     intent.putExtra("roomNumber", roomNumber);
                     intent.putExtra("event", event);

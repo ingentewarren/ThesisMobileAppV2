@@ -1,21 +1,31 @@
 package com.example.thesisprojectmobileapp;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -25,6 +35,9 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
     private Button btnCancel;
     private TextView textViewDate;
     private Button btnConfirm;
+    private Button btnChecker;
+    private TextView textViewTimeEnd;
+    private TextView textViewTimeStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +55,6 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
         // Find the EditText view by its ID
         TextView textViewDate = findViewById(R.id.textViewDate);
-
-        // Get the current date and format it as "yyyy-MM-dd"
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String currentDate = sdf.format(new Date());
-
-        // Set the current date as the text of the EditText
-        textViewDate.setText(currentDate);
-
-
-
-
-
         TextView textViewFullName = findViewById(R.id.textViewFullName);
         TextView textViewRoomNumber = findViewById(R.id.textViewRoomNumber);
         TextView textViewEvent = findViewById(R.id.textViewEvent);
@@ -63,6 +64,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            String date = extras.getString("date");
             String fullName = extras.getString("fullName");
             String roomNumber = extras.getString("roomNumber");
             String event = extras.getString("event");
@@ -70,6 +72,8 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             String timeEnd = extras.getString("timeEnd");
             String subjectCode = extras.getString("subjectCode");
 
+            textViewDate.setText(date);
+            textViewFullName.setText(fullName);
             textViewFullName.setText(fullName);
             textViewRoomNumber.setText(roomNumber);
             textViewEvent.setText(event);
@@ -91,6 +95,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         textViewTimeEnd = findViewById(R.id.textViewTimeEnd);
         textViewSubjectCode = findViewById(R.id.textViewSubjectCode);
         btnConfirm = findViewById(R.id.btnConfirm);
+        btnChecker = findViewById(R.id.btnChecker);
 
         // Get the values from the TextViews
         String date = textViewDate.getText().toString();
@@ -100,6 +105,26 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         String timeStart = textViewTimeStart.getText().toString();
         String timeEnd = textViewTimeEnd.getText().toString();
         String subjectCode = textViewSubjectCode.getText().toString();
+        String weekDay = getDayOfWeek(date);
+
+
+        //Sets the confirm button invisible;
+        btnConfirm.setVisibility(View.INVISIBLE);
+
+        // Add an OnClickListener to the "Check Availability" button
+        btnChecker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                //Fetch User Input and Database
+                //fetchData(timeStart, timeEnd);
+                Log.d(TAG, "Weekday is: " + weekDay);
+
+
+            }
+        });
+
 
         // Add an OnClickListener to the "Confirm" button
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -138,8 +163,96 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         });
     }
 
+
+
     //Methods Here
 
+    //Schedule conflict checker
+    public static boolean checkTimeConflict(String startTime1, String endTime1, String startTime2, String endTime2) {
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        try {
+            Date start1 = timeFormat.parse(startTime1);
+            Date end1 = timeFormat.parse(endTime1);
+            Date start2 = timeFormat.parse(startTime2);
+            Date end2 = timeFormat.parse(endTime2);
+
+            Log.e(TAG, "start1 : " + startTime1);
+            Log.e(TAG, "end1 : " + endTime1);
+            Log.e(TAG, "start2 : " + startTime2);
+            Log.e(TAG, "end2 : " + endTime2);
+
+            // check if start time of one timeframe is between the start and end time of the other timeframe
+            if (startTime1.equals(startTime2) || endTime1.equals(endTime2)) {
+                // the start or end time of either time frame is the same
+                return true;
+            } else if (start1.before(start2) && end1.after(start2)) {
+                // the first time frame starts before the second one and ends after it starts
+                return true;
+            } else if (start2.before(start1) && end2.after(start1)) {
+                // the second time frame starts before the first one and ends after it starts
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //String Input and Database Fetcher
+    private void fetchData(String Start, String End) {
+
+
+        String weekDay = "Monday";
+        String roomNumber = "1";
+        String timeNumber = "1";
+        //Get the values from the Database
+        // Fetch the values from the Firebase Realtime Database
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
+        databaseRef.child("time_start" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String firebaseValue1 = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Firebase Value 1: " + firebaseValue1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value1.", databaseError.toException());
+            }
+        });
+
+        databaseRef.child("time_end" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String firebaseValue2 = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Firebase Value 2: " + firebaseValue2);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "Failed to read value2.", databaseError.toException());
+            }
+        });
+
+    }
+
+    //Converts a Date into day of the Week
+    public String getDayOfWeek(String dateStr) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date date = format.parse(dateStr);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            return new DateFormatSymbols(Locale.US).getWeekdays()[dayOfWeek];
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }
