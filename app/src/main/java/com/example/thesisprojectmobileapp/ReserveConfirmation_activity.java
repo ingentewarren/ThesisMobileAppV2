@@ -116,11 +116,38 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                // Define the database reference
+                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
 
-                //Fetch User Input and Database
-                //fetchData(timeStart, timeEnd);
-                Log.d(TAG, "Weekday is: " + weekDay);
+                // Loop 10 times
+                for (int i = 1; i < 11; i++) {
+                    // Define the child node to check
+                    String childNode = "time_start" + i;
 
+                    // Check if the child node exists in the database
+                    int finalI = i;
+                    databaseRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // The child node exists, do something
+                                Log.d(TAG, childNode + " exists in the database");
+
+                                //fetch the data on database
+                                fetchData(finalI, weekDay, roomNumber);
+                            } else {
+                                // The child node doesn't exist, do something else
+                                Log.d(TAG, childNode + " doesn't exist in the database");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Handle the error
+                            Log.e(TAG, "Failed to read value.", databaseError.toException());
+                        }
+                    });
+                }
 
             }
         });
@@ -202,20 +229,15 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
     }
 
     //String Input and Database Fetcher
-    private void fetchData(String Start, String End) {
-
-
-        String weekDay = "Monday";
-        String roomNumber = "1";
-        String timeNumber = "1";
+    private void fetchData(Integer timeNumber, String weekDay, String roomNumber) {
         //Get the values from the Database
         // Fetch the values from the Firebase Realtime Database
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
         databaseRef.child("time_start" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String firebaseValue1 = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Firebase Value 1: " + firebaseValue1);
+                String dataBaseTimeStart = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Db Time Start: " + dataBaseTimeStart);
             }
 
             @Override
@@ -227,8 +249,8 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         databaseRef.child("time_end" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String firebaseValue2 = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Firebase Value 2: " + firebaseValue2);
+                String dataBaseTimeEnd = dataSnapshot.getValue(String.class);
+                Log.d(TAG, "Db Time End: " + dataBaseTimeEnd);
             }
 
             @Override
