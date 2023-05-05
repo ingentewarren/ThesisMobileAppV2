@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -71,17 +73,24 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 String timeEnd = editTextTimeEnd.getText().toString();
                 String subjectCode = editTextSubjectCode.getText().toString();
 
-                // Create an intent to start the confirmation activity and pass the user's name
-                Intent intent = new Intent(ReserveActivity.this, ReserveConfirmation_activity.class);
-                intent.putExtra("fullName", fullName);
-                intent.putExtra("roomNumber", roomNumber);
-                intent.putExtra("event", event);
-                intent.putExtra("timeStart", timeStart);
-                intent.putExtra("timeEnd", timeEnd);
-                intent.putExtra("subjectCode", subjectCode);
-                startActivity(intent);
+                // Check if all EditText fields are filled up
+                if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(roomNumber) || TextUtils.isEmpty(event)
+                        || TextUtils.isEmpty(timeStart) || TextUtils.isEmpty(timeEnd) || TextUtils.isEmpty(subjectCode)) {
+                    Toast.makeText(ReserveActivity.this, "Please fill up all fields.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Create an intent to start the confirmation activity and pass the user's data
+                    Intent intent = new Intent(ReserveActivity.this, ReserveConfirmation_activity.class);
+                    intent.putExtra("fullName", fullName);
+                    intent.putExtra("roomNumber", roomNumber);
+                    intent.putExtra("event", event);
+                    intent.putExtra("timeStart", timeStart);
+                    intent.putExtra("timeEnd", timeEnd);
+                    intent.putExtra("subjectCode", subjectCode);
+                    startActivity(intent);
+                }
             }
         });
+
 
 
     }

@@ -24,9 +24,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="362dp"
-        android:layout_height="580dp"
-        android:layout_marginTop="4dp"
+        android:layout_height="650dp"
         android:background="@drawable/rounded_white"
+        app:layout_constraintBottom_toTopOf="@+id/btn_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,10 +50,10 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Full Name"
             android:background="@drawable/border_stroke"
-
             android:gravity="center"
+
+            android:hint="Full Name"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -80,9 +80,9 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Time Start"
             android:background="@drawable/border_stroke"
             android:gravity="center"
+            android:hint="Time Start"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -120,9 +120,9 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Time End"
             android:background="@drawable/border_stroke"
             android:gravity="center"
+            android:hint="Time End"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -134,10 +134,10 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Subject Code"
             android:background="@drawable/border_stroke"
-
             android:gravity="center"
+
+            android:hint="Subject Code"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -162,10 +162,10 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Room Number"
             android:background="@drawable/border_stroke"
-
             android:gravity="center"
+
+            android:hint="Room Number"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -203,9 +203,9 @@
             android:layout_width="294dp"
             android:layout_height="33dp"
             android:layout_marginStart="32dp"
-            android:hint="Event"
             android:background="@drawable/border_stroke"
             android:gravity="center"
+            android:hint="Event"
             android:textColor="#3E4761"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -228,8 +228,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnConfirm"
             android:layout_width="293dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="32dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/round_corners_background"
             android:text="Confirm"
             android:textColor="#fff"
@@ -238,20 +238,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnChecker"
+            android:layout_width="293dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/round_corners_background"
+            android:text="Check Availability"
+            android:textColor="#fff"
+            android:textSize="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_cancel"
         android:layout_width="179dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/round_corners_background"
         android:text="Cancel"
+        android:textColor="#ffff"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="#ffff"
-        android:background="@drawable/round_corners_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

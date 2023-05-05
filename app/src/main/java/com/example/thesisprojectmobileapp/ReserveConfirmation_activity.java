@@ -138,4 +138,8 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         });
     }
 
+    //Methods Here
+
+
+
 }
