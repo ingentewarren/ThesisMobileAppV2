@@ -38,11 +38,17 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
     private Button btnChecker;
     private TextView textViewTimeEnd;
     private TextView textViewTimeStart;
+    private int counter = 0;
+    final boolean[] conflictDetected = {false};
+    private int counterA = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_confirmation);
+
+
+
 
         btnCancel = (Button) findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -107,50 +113,119 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         String subjectCode = textViewSubjectCode.getText().toString();
         String weekDay = getDayOfWeek(date);
 
+        //Sets the isConflict Node to False
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
+        databaseRef.child("isConflict").setValue(false);
+
+
 
         //Sets the confirm button invisible;
         btnConfirm.setVisibility(View.INVISIBLE);
 
+        loopBtn(weekDay, timeStart, timeEnd, roomNumber);
+
         // Add an OnClickListener to the "Check Availability" button
-        btnChecker.setOnClickListener(new View.OnClickListener() {
+        // Add an OnClickListener to the "Check Availability" button
+
+        //old Button listener code
+        /*btnChecker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Define the database reference
                 DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
 
-                // Loop 10 times
-                for (int i = 1; i < 11; i++) {
+                final boolean[] conflictDetected = {false};
+                Log.e(TAG, "Error Counter Before Loop: " + counter);
+
+                // Loop 10 times or until a conflict is detected
+                for (int i = 1, x = 0; i < 11 && !conflictDetected[0]; i++) {
                     // Define the child node to check
                     String childNode = "time_start" + i;
+                    Log.d(TAG, "Loop Number I: " + i);
+                    Log.d(TAG, "Error Counter: " + counter);
 
-                    // Check if the child node exists in the database
+
                     int finalI = i;
                     databaseRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                // The child node exists, do something
-                                Log.d(TAG, childNode + " exists in the database");
+                                String dataBaseTimeStart = dataSnapshot.getValue(String.class);
 
-                                //fetch the data on database
-                                fetchData(finalI, weekDay, roomNumber);
-                            } else {
-                                // The child node doesn't exist, do something else
-                                Log.d(TAG, childNode + " doesn't exist in the database");
+                                // Fetch the end time for this time slot
+                                String childNodeEnd = "time_end" + finalI;
+                                databaseRef.child(childNodeEnd).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            String dataBaseTimeEnd = dataSnapshot.getValue(String.class);
+                                            // Check for time conflict
+                                            boolean isConflict = checkTimeConflict(timeStart, timeEnd, dataBaseTimeStart, dataBaseTimeEnd);
+                                            if (isConflict) {
+                                                Log.d(TAG, "Time conflict detected for time slot " + finalI);
+                                                conflictDetected[0] = true;
+                                                incrementCounter();
+                                                Log.d(TAG, "Counter is now: " + counter);
+                                                Log.d(TAG, "Loop Number finalI: " + finalI);
+                                            }else{
+                                                Log.d(TAG, "Counter is now: " + counter);
+                                                Log.d(TAG, "Loop Number: " + finalI);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e(TAG, "Failed to read value.", databaseError.toException());
+                                    }
+                                });
                             }
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            // Handle the error
                             Log.e(TAG, "Failed to read value.", databaseError.toException());
                         }
                     });
+
+
                 }
 
+
+            }
+        });*/
+
+        btnChecker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                databaseRef.child("isConflict").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Boolean isConflict = dataSnapshot.getValue(Boolean.class);
+                        if (isConflict != null && !isConflict) {
+                            // Do something here if isConflict is false
+                            Toast.makeText(ReserveConfirmation_activity.this, "There is no conflict in the schedule. Click Confirm to submit your reservation", Toast.LENGTH_SHORT).show();
+                            btnConfirm.setVisibility(View.VISIBLE);
+                        } else {
+                            Toast.makeText(ReserveConfirmation_activity.this, "There is a conflict in the schedule.", Toast.LENGTH_SHORT).show();
+                            btnConfirm.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle errors here
+                    }
+                });
             }
         });
+
+
+
+
+
+
 
 
         // Add an OnClickListener to the "Confirm" button
@@ -192,7 +267,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
 
 
-    //Methods Here
+    //METHODS HERE!!!!!
 
     //Schedule conflict checker
     public static boolean checkTimeConflict(String startTime1, String endTime1, String startTime2, String endTime2) {
@@ -203,10 +278,10 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             Date start2 = timeFormat.parse(startTime2);
             Date end2 = timeFormat.parse(endTime2);
 
-            Log.e(TAG, "start1 : " + startTime1);
-            Log.e(TAG, "end1 : " + endTime1);
-            Log.e(TAG, "start2 : " + startTime2);
-            Log.e(TAG, "end2 : " + endTime2);
+            Log.d(TAG, "start1 : " + startTime1);
+            Log.d(TAG, "end1 : " + endTime1);
+            Log.d(TAG, "start2 : " + startTime2);
+            Log.d(TAG, "end2 : " + endTime2);
 
             // check if start time of one timeframe is between the start and end time of the other timeframe
             if (startTime1.equals(startTime2) || endTime1.equals(endTime2)) {
@@ -228,8 +303,8 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         }
     }
 
-    //String Input and Database Fetcher
-    private void fetchData(Integer timeNumber, String weekDay, String roomNumber) {
+    //String Time Database Fetcher
+    private void fetchData(Integer timeNumber, String weekDay, String roomNumber, TimeCallback callback) {
         //Get the values from the Database
         // Fetch the values from the Firebase Realtime Database
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
@@ -260,6 +335,16 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         });
 
     }
+    public interface TimeCallback {
+        void onTimeFetched(String dataBaseTimeStart, String dataBaseTimeEnd);
+    }
+
+    //Counter Method Used for Checking Conflicts
+    public void incrementCounter() {
+        counter++;
+    }
+
+
 
     //Converts a Date into day of the Week
     public String getDayOfWeek(String dateStr) {
@@ -274,6 +359,77 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    //Button main function
+    public void loopBtn(String weekDay, String timeStart, String timeEnd, String roomNumber){
+        // Define the database reference
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
+
+        // Loop 10 times or until a conflict is detected
+        for (int i = 1, x = 0; i < 11 && !conflictDetected[0]; i++) {
+            // Define the child node to check
+            String childNode = "time_start" + i;
+            Log.d(TAG, "Loop Number I: " + i);
+            Log.d(TAG, "Error Counter: " + counter);
+
+
+            int finalI = i;
+            databaseRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String dataBaseTimeStart = dataSnapshot.getValue(String.class);
+
+                        // Fetch the end time for this time slot
+                        String childNodeEnd = "time_end" + finalI;
+                        databaseRef.child(childNodeEnd).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    String dataBaseTimeEnd = dataSnapshot.getValue(String.class);
+                                    // Check for time conflict
+                                    boolean isConflict = checkTimeConflict(timeStart, timeEnd, dataBaseTimeStart, dataBaseTimeEnd);
+                                    if (isConflict) {
+                                        Log.d(TAG, "Time conflict detected for time slot " + finalI);
+                                        conflictDetected[0] = true;
+                                        Log.e(TAG, "Inside if loop: " + conflictDetected[0]);
+                                        incrementCounter();
+                                        Log.d(TAG, "Counter is now: " + counter);
+                                        Log.d(TAG, "Loop Number finalI: " + finalI);
+                                        databaseRef.child("isConflict").setValue(true);
+                                    }else{
+                                        Log.d(TAG, "Counter is now: " + counter);
+                                        Log.d(TAG, "Loop Number: " + finalI);
+                                        Log.e(TAG, "Inside else loop: " + conflictDetected[0]);
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                Log.e(TAG, "Failed to read value.", databaseError.toException());
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.e(TAG, "Failed to read value.", databaseError.toException());
+                }
+            });
+
+
+        }
+
+
+
+    }
+
+    //Button after main function
+    public void afterFunction(){
+        Log.e(TAG, "Error Counter After Loop: " + counter);
     }
 
 

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +35,8 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
 
+
+
         Intent intent = getIntent();
         roomNumber = intent.getStringExtra("roomNumber");
 
@@ -46,9 +50,15 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         // Set the current date as the text of the EditText
         editTextDate.setText(currentDate);
 
+        // Get the user's name from the EditText view
+        Spinner spinnerRoomNumber = findViewById(R.id.spinnerRoomNumber);
 
-        //List of Rooms
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Room");
+
+        String date = editTextDate.getText().toString();
+        String roomNumber = spinnerRoomNumber.getSelectedItem().toString();
+
+        String weekDay = getDayOfWeek(date);
+
 
 
 
@@ -58,6 +68,9 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 // Get the user's name from the EditText view
                 EditText editTextDate = findViewById(R.id.editTextDate);
                 EditText editTextName = findViewById(R.id.editText_fullname);
@@ -74,6 +87,8 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 String timeStart = editTextTimeStart.getText().toString();
                 String timeEnd = editTextTimeEnd.getText().toString();
                 String subjectCode = editTextSubjectCode.getText().toString();
+                String weekDay = getDayOfWeek(date);
+
 
                 // Check if all EditText fields are filled up
                 if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(roomNumber) || TextUtils.isEmpty(event)
@@ -91,15 +106,36 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                     intent.putExtra("subjectCode", subjectCode);
                     startActivity(intent);
                 }
+
+
             }
+
+
         });
 
 
 
     }
 
+    //METHODS HERE!!!
+
     public void openSubmitConfirmation() {
         Intent intent = new Intent(this, ReserveConfirmation_activity.class);
         startActivity(intent);
+    }
+
+    //Converts a Date into day of the Week
+    public String getDayOfWeek(String dateStr) {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date date = format.parse(dateStr);
+            java.util.Calendar calendar = java.util.Calendar.getInstance();
+            calendar.setTime(date);
+            int dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK);
+            return new DateFormatSymbols(Locale.US).getWeekdays()[dayOfWeek];
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
