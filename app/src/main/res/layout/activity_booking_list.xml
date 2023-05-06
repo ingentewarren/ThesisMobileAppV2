@@ -19,10 +19,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_width="398dp"
+        android:layout_height="581dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/round_corners_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
