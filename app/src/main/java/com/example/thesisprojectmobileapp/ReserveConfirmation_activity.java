@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Random;
 
 public class ReserveConfirmation_activity extends AppCompatActivity {
 
@@ -233,6 +234,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String code = generateCode();
 
                 // Create a new HashMap to store the data
                 HashMap<String, Object> reservationData = new HashMap<>();
@@ -242,6 +244,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                 reservationData.put("TimeStart", timeStart);
                 reservationData.put("TimeEnd", timeEnd);
                 reservationData.put("SubjectCode", subjectCode);
+                reservationData.put("ReserveCode", code);
 
                 // Write the data to the "Reserve" node
                 roomRef.child("Room" + roomNumber).child("Reserve").setValue(reservationData)
@@ -431,6 +434,14 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
     public void afterFunction(){
         Log.e(TAG, "Error Counter After Loop: " + counter);
     }
+
+    //6 Digit code Generator
+    public static String generateCode() {
+        Random random = new Random();
+        int code = random.nextInt(900000) + 100000;  // Generates a random integer between 100000 and 999999
+        return Integer.toString(code);
+    }
+
 
 
 }
