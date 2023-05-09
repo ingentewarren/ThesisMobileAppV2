@@ -184,7 +184,8 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Toast.makeText(ReserveConfirmation_activity.this, "Reservation saved successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(ReserveConfirmation_activity.this, room_list_activity.class);
+                                        Intent intent = new Intent(ReserveConfirmation_activity.this, CodeActivity.class);
+                                        intent.putExtra("code", code);
                                         startActivity(intent);
                                     }
                                 })
