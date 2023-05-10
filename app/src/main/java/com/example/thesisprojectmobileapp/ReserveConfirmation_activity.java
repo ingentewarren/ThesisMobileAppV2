@@ -48,9 +48,6 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_confirmation);
 
-
-
-
         btnCancel = (Button) findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DFE5F8"
+    android:background="#E3EEFF"
     tools:context=".ReserveConfirmation_activity">
 
     <TextView
         android:id="@+id/textView22"
         android:layout_width="298dp"
         android:layout_height="55dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
         android:text="Reserve Room"
         android:textColor="#2196F3"
-        android:gravity="center"
         android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,9 +27,8 @@
         android:layout_width="362dp"
         android:layout_height="650dp"
         android:background="@drawable/rounded_white"
-        app:layout_constraintBottom_toTopOf="@+id/btn_cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView22">
 
@@ -229,7 +229,7 @@
             android:id="@+id/btnConfirm"
             android:layout_width="293dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="68dp"
             android:background="@drawable/round_corners_background"
             android:text="Confirm"
             android:textColor="#fff"
@@ -242,29 +242,32 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnChecker"
             android:layout_width="293dp"
-            android:layout_height="55dp"
-            android:layout_marginBottom="16dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/round_corners_background"
             android:text="Check Availability"
             android:textColor="#fff"
-            android:textSize="25dp"
+            android:textSize="20dp"
             app:layout_constraintBottom_toTopOf="@+id/btnConfirm"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.507"
             app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_cancel"
-        android:layout_width="179dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/round_corners_background"
-        android:text="Cancel"
-        android:textColor="#ffff"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="179dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/round_corners_background"
+            android:text="Cancel"
+            android:textColor="#ffff"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/btnConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/btnConfirm"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

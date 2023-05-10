@@ -28,6 +28,7 @@ public class room_list_activity extends AppCompatActivity {
     private Button btnProfile;
     private Button btnSeeBooking;
     private Button btnBookingHistory;
+    private  Button btnSchedule;
 
     private TextView textViewRoom1;
     private TextView textViewRoom2;
@@ -86,6 +87,17 @@ public class room_list_activity extends AppCompatActivity {
             }
         });
 
+        btnSchedule = (Button) findViewById(R.id.btnSchedule);
+        btnSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
         //Displaying data from Firebase (Room Numbers)
@@ -109,6 +121,7 @@ public class room_list_activity extends AppCompatActivity {
         textViewStatus4 = findViewById(R.id.textViewStatus4);
         textViewStatus5 = findViewById(R.id.textViewStatus5);
         textViewStatus6 = findViewById(R.id.textViewStatus6);
+
 
         // Add a ValueEventListener to listen for changes to the data at the "Room" node
         roomRef.addValueEventListener(new ValueEventListener() {
@@ -136,6 +149,12 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus1.setTextColor(Color.RED);
                                     }
                                 }
+                                if(dataSnapshot.child("Room" + i).child("Schedule").exists()) {
+                                    btnSchedule.setVisibility(View.VISIBLE);
+                                } else {
+                                    btnSchedule.setVisibility(View.GONE);
+                                }
+
                                 break;
                             case 2:
                                 if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
@@ -152,6 +171,14 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus2.setTextColor(Color.RED);
                                     }
                                 }
+                                btnSchedule.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
+                                        startActivity(intent);
+                                    }
+                                });
                                 break;
                             case 3:
                                 if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
@@ -245,4 +272,5 @@ public class room_list_activity extends AppCompatActivity {
         Intent intent = new Intent(this, Profile_Activity.class);
         startActivity(intent);
     }
+
 }
