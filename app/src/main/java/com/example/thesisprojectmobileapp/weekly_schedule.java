@@ -43,6 +43,7 @@ public class weekly_schedule extends AppCompatActivity implements View.OnClickLi
         select = findViewById(R.id.select);
         def = item2.getCurrentTextColor();
 
+        item1.setTextColor(Color.WHITE);
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(R.id.fragmentContainer, fragmentOne.class, null)

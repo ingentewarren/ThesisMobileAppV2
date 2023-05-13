@@ -88,14 +88,6 @@ public class room_list_activity extends AppCompatActivity {
         });
 
         btnSchedule = (Button) findViewById(R.id.btnSchedule);
-        btnSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
-                startActivity(intent);
-            }
-        });
 
 
 
@@ -149,11 +141,13 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus1.setTextColor(Color.RED);
                                     }
                                 }
-                                if(dataSnapshot.child("Room" + i).child("Schedule").exists()) {
-                                    btnSchedule.setVisibility(View.VISIBLE);
-                                } else {
-                                    btnSchedule.setVisibility(View.GONE);
-                                }
+                                btnSchedule.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 break;
                             case 2:
@@ -171,14 +165,7 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus2.setTextColor(Color.RED);
                                     }
                                 }
-                                btnSchedule.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Toast.makeText(getApplicationContext(), "Button clicked", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
-                                        startActivity(intent);
-                                    }
-                                });
+
                                 break;
                             case 3:
                                 if(dataSnapshot.child("Room" + i).child("Room Number").exists()){

@@ -2,11 +2,24 @@ package com.example.thesisprojectmobileapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +36,11 @@ public class fragmentFive extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    RecyclerView recyclerView;
+    MyAdapter adapter;
+    ArrayList<schedule> scheduleList;
+    DatabaseReference databaseReference;
 
     public fragmentFive() {
         // Required empty public constructor
@@ -56,9 +74,53 @@ public class fragmentFive extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_five, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_five, container, false);
+        recyclerView = view.findViewById(R.id.schedule_lists);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        scheduleList = new ArrayList<>();
+        adapter = new MyAdapter(getContext(), scheduleList);
+        recyclerView.setAdapter(adapter);
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference roomRef = rootRef.child("Room");
+
+        roomRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot roomSnapshot : dataSnapshot.getChildren()) {
+                    DatabaseReference scheduleRef = roomSnapshot.child("Schedule").child("Friday").getRef();
+                    scheduleRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot schedSnapshot : dataSnapshot.getChildren()) {
+                                if (schedSnapshot.hasChild("instructor") && schedSnapshot.hasChild("subject") &&
+                                        schedSnapshot.hasChild("section") && schedSnapshot.hasChild("time_start") &&
+                                        schedSnapshot.hasChild("time_end")) {
+                                    schedule schedules = schedSnapshot.getValue(schedule.class);
+                                    scheduleList.add(schedules);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Handle error
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+            }
+        });
+
+        return view;
     }
+
 }
