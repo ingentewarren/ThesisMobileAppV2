@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Use the {@link fragmentThree#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragmentFour extends Fragment {
+public class fragmentTwo_room2 extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +41,7 @@ public class fragmentFour extends Fragment {
     ArrayList<schedule> scheduleList;
     DatabaseReference databaseReference;
 
-    public fragmentFour() {
+    public fragmentTwo_room2() {
         // Required empty public constructor
     }
 
@@ -54,8 +54,8 @@ public class fragmentFour extends Fragment {
      * @return A new instance of fragment fragmentThree.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragmentFour newInstance(String param1, String param2) {
-        fragmentFour fragment = new fragmentFour();
+    public static fragmentTwo_room2 newInstance(String param1, String param2) {
+        fragmentTwo_room2 fragment = new fragmentTwo_room2();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -74,7 +74,7 @@ public class fragmentFour extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_four, container, false);
+        View view = inflater.inflate(R.layout.fragment_two_room2, container, false);
         recyclerView = view.findViewById(R.id.schedule_lists);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -84,7 +84,7 @@ public class fragmentFour extends Fragment {
         recyclerView.setAdapter(adapter);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference roomRef = rootRef.child("Room").child("Room1").child("Schedule").child("Thursday");
+        DatabaseReference roomRef = rootRef.child("Room").child("Room2").child("Schedule").child("Tuesday");
 
         roomRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

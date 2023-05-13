@@ -29,6 +29,7 @@ public class room_list_activity extends AppCompatActivity {
     private Button btnSeeBooking;
     private Button btnBookingHistory;
     private  Button btnSchedule;
+    private  Button btnSchedule2;
 
     private TextView textViewRoom1;
     private TextView textViewRoom2;
@@ -87,11 +88,6 @@ public class room_list_activity extends AppCompatActivity {
             }
         });
 
-        btnSchedule = (Button) findViewById(R.id.btnSchedule);
-
-
-
-
         //Displaying data from Firebase (Room Numbers)
         // Get a reference to the "Room" node in your Firebase Realtime Database
         DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference().child("Room");
@@ -110,7 +106,8 @@ public class room_list_activity extends AppCompatActivity {
         textViewStatus4 = findViewById(R.id.textViewStatus4);
         textViewStatus5 = findViewById(R.id.textViewStatus5);
         textViewStatus6 = findViewById(R.id.textViewStatus6);
-
+        btnSchedule = (Button) findViewById(R.id.btnSchedule);
+        btnSchedule2 = (Button) findViewById(R.id.btnSchedule2);
 
         // Add a ValueEventListener to listen for changes to the data at the "Room" node
         roomRef.addValueEventListener(new ValueEventListener() {
@@ -162,6 +159,13 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus2.setTextColor(Color.RED);
                                     }
                                 }
+                                btnSchedule2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule2.class);
+                                        startActivity(intent);
+                                    }
+                                });
 
                                 break;
                             case 3:

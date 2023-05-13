@@ -85,33 +85,20 @@ public class fragmentFive extends Fragment {
         recyclerView.setAdapter(adapter);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference roomRef = rootRef.child("Room");
+        DatabaseReference roomRef = rootRef.child("Room").child("Room1").child("Schedule").child("Friday");
 
         roomRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot roomSnapshot : dataSnapshot.getChildren()) {
-                    DatabaseReference scheduleRef = roomSnapshot.child("Schedule").child("Friday").getRef();
-                    scheduleRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot schedSnapshot : dataSnapshot.getChildren()) {
-                                if (schedSnapshot.hasChild("instructor") && schedSnapshot.hasChild("subject") &&
-                                        schedSnapshot.hasChild("section") && schedSnapshot.hasChild("time_start") &&
-                                        schedSnapshot.hasChild("time_end")) {
-                                    schedule schedules = schedSnapshot.getValue(schedule.class);
-                                    scheduleList.add(schedules);
-                                }
-                            }
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Handle error
-                        }
-                    });
+                for (DataSnapshot schedSnapshot : dataSnapshot.getChildren()) {
+                    if (schedSnapshot.hasChild("instructor") && schedSnapshot.hasChild("subject") &&
+                            schedSnapshot.hasChild("section") && schedSnapshot.hasChild("time_start") &&
+                            schedSnapshot.hasChild("time_end")) {
+                        schedule schedules = schedSnapshot.getValue(schedule.class);
+                        scheduleList.add(schedules);
+                    }
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
