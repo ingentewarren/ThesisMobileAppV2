@@ -122,76 +122,6 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
         loopBtn(weekDay, timeStart, timeEnd, roomNumber);
 
-        // Add an OnClickListener to the "Check Availability" button
-        // Add an OnClickListener to the "Check Availability" button
-
-        //old Button listener code
-        /*btnChecker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Define the database reference
-                DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
-
-                final boolean[] conflictDetected = {false};
-                Log.e(TAG, "Error Counter Before Loop: " + counter);
-
-                // Loop 10 times or until a conflict is detected
-                for (int i = 1, x = 0; i < 11 && !conflictDetected[0]; i++) {
-                    // Define the child node to check
-                    String childNode = "time_start" + i;
-                    Log.d(TAG, "Loop Number I: " + i);
-                    Log.d(TAG, "Error Counter: " + counter);
-
-
-                    int finalI = i;
-                    databaseRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                String dataBaseTimeStart = dataSnapshot.getValue(String.class);
-
-                                // Fetch the end time for this time slot
-                                String childNodeEnd = "time_end" + finalI;
-                                databaseRef.child(childNodeEnd).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            String dataBaseTimeEnd = dataSnapshot.getValue(String.class);
-                                            // Check for time conflict
-                                            boolean isConflict = checkTimeConflict(timeStart, timeEnd, dataBaseTimeStart, dataBaseTimeEnd);
-                                            if (isConflict) {
-                                                Log.d(TAG, "Time conflict detected for time slot " + finalI);
-                                                conflictDetected[0] = true;
-                                                incrementCounter();
-                                                Log.d(TAG, "Counter is now: " + counter);
-                                                Log.d(TAG, "Loop Number finalI: " + finalI);
-                                            }else{
-                                                Log.d(TAG, "Counter is now: " + counter);
-                                                Log.d(TAG, "Loop Number: " + finalI);
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        Log.e(TAG, "Failed to read value.", databaseError.toException());
-                                    }
-                                });
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.e(TAG, "Failed to read value.", databaseError.toException());
-                        }
-                    });
-
-
-                }
-
-
-            }
-        });*/
 
         btnChecker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,50 +149,63 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
-
         // Add an OnClickListener to the "Confirm" button
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String code = generateCode();
+                roomRef.child("Room" + roomNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int reserveNumber = 1;
+                        while (snapshot.child("Reserve" + reserveNumber).exists()) {
+                            reserveNumber++;
+                        }
+                        String reserveName = "Reserve" + reserveNumber;
 
-                // Create a new HashMap to store the data
-                HashMap<String, Object> reservationData = new HashMap<>();
-                reservationData.put("Date", date);
-                reservationData.put("FullName", fullName);
-                reservationData.put("Event", event);
-                reservationData.put("TimeStart", timeStart);
-                reservationData.put("TimeEnd", timeEnd);
-                reservationData.put("SubjectCode", subjectCode);
-                reservationData.put("ReserveCode", code);
+                        String code = generateCode();
 
-                // Write the data to the "Reserve" node
-                roomRef.child("Room" + roomNumber).child("Reserve").setValue(reservationData)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(ReserveConfirmation_activity.this, "Reservation saved successfully", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ReserveConfirmation_activity.this, room_list_activity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(ReserveConfirmation_activity.this, "Failed to save reservation: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        // Create a new HashMap to store the data
+                        HashMap<String, Object> reservationData = new HashMap<>();
+                        reservationData.put("Date", date);
+                        reservationData.put("FullName", fullName);
+                        reservationData.put("Event", event);
+                        reservationData.put("TimeStart", timeStart);
+                        reservationData.put("TimeEnd", timeEnd);
+                        reservationData.put("SubjectCode", subjectCode);
+                        reservationData.put("ReserveCode", code);
+
+                        // Write the data to the new "Reserve" node
+                        roomRef.child("Room" + roomNumber).child(reserveName).setValue(reservationData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(ReserveConfirmation_activity.this, "Reservation saved successfully", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(ReserveConfirmation_activity.this, CodeActivity.class);
+                                        intent.putExtra("code", code);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(ReserveConfirmation_activity.this, "Failed to save reservation: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ReserveConfirmation_activity.this, "Failed to read room data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-
-
         });
+
+
+
+
+
     }
 
 
@@ -303,47 +246,10 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         }
     }
 
-    //String Time Database Fetcher
-    private void fetchData(Integer timeNumber, String weekDay, String roomNumber, TimeCallback callback) {
-        //Get the values from the Database
-        // Fetch the values from the Firebase Realtime Database
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
-        databaseRef.child("time_start" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String dataBaseTimeStart = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Db Time Start: " + dataBaseTimeStart);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Failed to read value1.", databaseError.toException());
-            }
-        });
-
-        databaseRef.child("time_end" + timeNumber).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String dataBaseTimeEnd = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Db Time End: " + dataBaseTimeEnd);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Failed to read value2.", databaseError.toException());
-            }
-        });
-
-    }
-    public interface TimeCallback {
-        void onTimeFetched(String dataBaseTimeStart, String dataBaseTimeEnd);
-    }
-
     //Counter Method Used for Checking Conflicts
     public void incrementCounter() {
         counter++;
     }
-
 
 
     //Converts a Date into day of the Week
@@ -361,10 +267,11 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         }
     }
 
-    //Button main function
+    //Button CHECK AVAILABILITY function logic starts here
     public void loopBtn(String weekDay, String timeStart, String timeEnd, String roomNumber){
         // Define the database reference
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
+        DatabaseReference schedRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
+        DatabaseReference reserveRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber);
 
         // Loop 10 times or until a conflict is detected
         for (int i = 1, x = 0; i < 11 && !conflictDetected[0]; i++) {
@@ -375,7 +282,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
 
             int finalI = i;
-            databaseRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
+            schedRef.child(childNode).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -383,7 +290,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
 
                         // Fetch the end time for this time slot
                         String childNodeEnd = "time_end" + finalI;
-                        databaseRef.child(childNodeEnd).addListenerForSingleValueEvent(new ValueEventListener() {
+                        schedRef.child(childNodeEnd).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
@@ -397,7 +304,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                                         incrementCounter();
                                         Log.d(TAG, "Counter is now: " + counter);
                                         Log.d(TAG, "Loop Number finalI: " + finalI);
-                                        databaseRef.child("isConflict").setValue(true);
+                                        schedRef.child("isConflict").setValue(true);
                                     }else{
                                         Log.d(TAG, "Counter is now: " + counter);
                                         Log.d(TAG, "Loop Number: " + finalI);
@@ -424,12 +331,6 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         }
 
 
-
-    }
-
-    //Button after main function
-    public void afterFunction(){
-        Log.e(TAG, "Error Counter After Loop: " + counter);
     }
 
     //6 Digit code Generator

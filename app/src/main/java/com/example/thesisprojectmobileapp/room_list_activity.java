@@ -93,9 +93,6 @@ public class room_list_activity extends AppCompatActivity {
 
 
         //Displaying data from Firebase (Room Numbers)
-        // Get a reference to your Firebase Realtime Database
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-
         // Get a reference to the "Room" node in your Firebase Realtime Database
         DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference().child("Room");
 

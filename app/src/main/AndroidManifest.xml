@@ -15,6 +15,13 @@
         android:theme="@style/Theme.ThesisProjectMobileApp"
         tools:targetApi="31">
         <activity
+            android:name=".CodeActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".BookingListActivity"
             android:exported="false">
             <meta-data
