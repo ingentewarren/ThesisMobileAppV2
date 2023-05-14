@@ -154,7 +154,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                roomRef.child("Room" + roomNumber).addListenerForSingleValueEvent(new ValueEventListener() {
+                roomRef.child("Room" + roomNumber).child("Reserve").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         int reserveNumber = 1;
@@ -176,7 +176,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                         reservationData.put("ReserveCode", code);
 
                         // Write the data to the new "Reserve" node
-                        roomRef.child("Room" + roomNumber).child(reserveName).setValue(reservationData)
+                        roomRef.child("Room" + roomNumber).child("Reserve").child(reserveName).setValue(reservationData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
