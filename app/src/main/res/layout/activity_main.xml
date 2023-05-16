@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DFE5F8"
+    android:background="#E3EEFF"
     tools:context=".MainActivity">
 
     <TextView
@@ -91,16 +91,31 @@
         android:id="@+id/btn_SignIn"
         android:layout_width="313dp"
         android:layout_height="48dp"
+        android:layout_marginBottom="84dp"
         android:background="@drawable/round_corners_background"
         android:text="Sign In"
         android:textColor="#ffff"
         android:textFontWeight="1000"
-        android:textSize="25dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        app:layout_constraintVertical_bias="0.28" />
+        app:layout_constraintVertical_bias="0.979" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:textColor="#3E4761"
+        app:layout_constraintBottom_toTopOf="@+id/btn_SignIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.167"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

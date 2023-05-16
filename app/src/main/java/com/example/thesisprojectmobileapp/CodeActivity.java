@@ -37,9 +37,5 @@ public class CodeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 }

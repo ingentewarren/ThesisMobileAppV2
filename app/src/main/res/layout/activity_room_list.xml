@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DFE5F8"
+    android:background="#E3EEFF"
     tools:context=".room_list_activity">
 
     <ImageView
@@ -92,8 +92,8 @@
     <ScrollView
         android:id="@+id/scrollViewList"
         android:layout_width="376dp"
-        android:layout_height="424dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="460dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.542"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,16 +112,14 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-
                 <TextView
                     android:id="@+id/textViewRoom1"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="No Data"
-
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -135,7 +133,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnRoom1Schedule"
+                    android:id="@+id/btnSchedule"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
@@ -162,7 +160,7 @@
                     android:layout_weight="1"
                     android:hint="No Data"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -176,6 +174,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSchedule2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
@@ -203,7 +202,7 @@
                     android:layout_weight="1"
                     android:hint="No Data"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -217,6 +216,7 @@
                     android:textStyle="bold" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSchedule3"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
@@ -243,7 +243,7 @@
                     android:layout_weight="1"
                     android:hint="No Data"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -282,7 +282,7 @@
                     android:layout_weight="1"
                     android:hint="No Data"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -311,7 +311,6 @@
                 android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_white"
-
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -322,7 +321,7 @@
                     android:layout_weight="1"
                     android:hint="No Data"
                     android:textAlignment="center"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -356,11 +355,11 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="144dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="88dp"
         android:text="Rooms"
         android:textColor="#3E4761"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btnRoomReserve"
         app:layout_constraintTop_toBottomOf="@+id/btnSeeBooking" />

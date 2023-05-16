@@ -48,9 +48,6 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_confirmation);
 
-
-
-
         btnCancel = (Button) findViewById(R.id.btn_cancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,14 +115,10 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room" + roomNumber).child("Schedule").child(weekDay);
         databaseRef.child("isConflict").setValue(false);
 
-
-
         //Sets the confirm button invisible;
         btnConfirm.setVisibility(View.INVISIBLE);
 
         loopBtn(weekDay, timeStart, timeEnd, roomNumber);
-
-
         btnChecker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,10 +176,23 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Toast.makeText(ReserveConfirmation_activity.this, "Reservation saved successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(ReserveConfirmation_activity.this, CodeActivity.class);
-                                        intent.putExtra("code", code);
-                                        startActivity(intent);
+                                        // Write the data to the new "isConfirm" node
+                                            roomRef.child("Room" + roomNumber).child("Reserve").child(reserveName).child("isConfirm").setValue("false")
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Toast.makeText(ReserveConfirmation_activity.this, "Reservation saved successfully", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(ReserveConfirmation_activity.this, CodeActivity.class);
+                                                        intent.putExtra("code", code);
+                                                        startActivity(intent);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(ReserveConfirmation_activity.this, "Failed to save reservation: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -195,6 +201,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                                         Toast.makeText(ReserveConfirmation_activity.this, "Failed to save reservation: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
                                 });
+
                     }
 
                     @Override
@@ -204,14 +211,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                 });
             }
         });
-
-
-
-
-
     }
-
-
 
     //METHODS HERE!!!!!
 
@@ -329,11 +329,7 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
                     Log.e(TAG, "Failed to read value.", databaseError.toException());
                 }
             });
-
-
         }
-
-
     }
 
     //6 Digit code Generator
@@ -342,7 +338,4 @@ public class ReserveConfirmation_activity extends AppCompatActivity {
         int code = random.nextInt(900000) + 100000;  // Generates a random integer between 100000 and 999999
         return Integer.toString(code);
     }
-
-
-
 }

@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,23 +14,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class BookingListActivity extends AppCompatActivity {
 
+public class BookingListActivity extends AppCompatActivity {
     private TextView textViewReserve1;
+    private Button btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_list);
+        btnCancel = (Button) findViewById(R.id.back_button);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         reserveValues();
-
-
-
-
     }
-
-    //METHOD HERE
     public void reserveValues(){
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Room").child("Room1").child("Reserve1");
         databaseRef.addListenerForSingleValueEvent(new ValueEventListener() {

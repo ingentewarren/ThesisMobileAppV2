@@ -2,11 +2,25 @@ package com.example.thesisprojectmobileapp;
 
 import static androidx.constraintlayout.widget.StateSet.TAG;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +42,8 @@ public class room_list_activity extends AppCompatActivity {
     private Button btnProfile;
     private Button btnSeeBooking;
     private Button btnBookingHistory;
+    private  Button btnSchedule;
+    private  Button btnSchedule2;
 
     private TextView textViewRoom1;
     private TextView textViewRoom2;
@@ -42,15 +58,12 @@ public class room_list_activity extends AppCompatActivity {
     private TextView textViewStatus5;
     private TextView textViewStatus6;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_list);
 
         btnRoomReserve = (Button) findViewById(R.id.btnRoomReserve);
-
         btnRoomReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,8 +99,6 @@ public class room_list_activity extends AppCompatActivity {
             }
         });
 
-
-
         //Displaying data from Firebase (Room Numbers)
         // Get a reference to the "Room" node in your Firebase Realtime Database
         DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference().child("Room");
@@ -106,6 +117,8 @@ public class room_list_activity extends AppCompatActivity {
         textViewStatus4 = findViewById(R.id.textViewStatus4);
         textViewStatus5 = findViewById(R.id.textViewStatus5);
         textViewStatus6 = findViewById(R.id.textViewStatus6);
+        btnSchedule = (Button) findViewById(R.id.btnSchedule);
+        btnSchedule2 = (Button) findViewById(R.id.btnSchedule2);
 
         // Add a ValueEventListener to listen for changes to the data at the "Room" node
         roomRef.addValueEventListener(new ValueEventListener() {
@@ -128,11 +141,20 @@ public class room_list_activity extends AppCompatActivity {
                                     if (roomStatus) {
                                         textViewStatus1.setText("Vacant");
                                         textViewStatus1.setTextColor(Color.GREEN);
+
                                     } else {
                                         textViewStatus1.setText("Occupied");
                                         textViewStatus1.setTextColor(Color.RED);
                                     }
                                 }
+                                btnSchedule.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule.class);
+                                        startActivity(intent);
+                                    }
+                                });
+
                                 break;
                             case 2:
                                 if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
@@ -149,6 +171,14 @@ public class room_list_activity extends AppCompatActivity {
                                         textViewStatus2.setTextColor(Color.RED);
                                     }
                                 }
+                                btnSchedule2.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(room_list_activity.this, weekly_schedule2.class);
+                                        startActivity(intent);
+                                    }
+                                });
+
                                 break;
                             case 3:
                                 if(dataSnapshot.child("Room" + i).child("Room Number").exists()){
@@ -160,6 +190,7 @@ public class room_list_activity extends AppCompatActivity {
                                     if (roomStatus) {
                                         textViewStatus3.setText("Vacant");
                                         textViewStatus3.setTextColor(Color.GREEN);
+
                                     } else {
                                         textViewStatus3.setText("Occupied");
                                         textViewStatus3.setTextColor(Color.RED);
@@ -231,8 +262,6 @@ public class room_list_activity extends AppCompatActivity {
         });
     }
 
-
-
     public void openReserve() {
         Intent intent = new Intent(this, ReserveActivity.class);
         startActivity(intent);
@@ -242,4 +271,5 @@ public class room_list_activity extends AppCompatActivity {
         Intent intent = new Intent(this, Profile_Activity.class);
         startActivity(intent);
     }
+
 }
