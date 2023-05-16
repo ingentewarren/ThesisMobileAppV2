@@ -60,7 +60,7 @@
             android:id="@+id/room_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="210"
+            android:text="205"
             android:paddingLeft="5dp"
             android:textColor="#FF3700B3"
             android:textStyle="bold" />

@@ -8,14 +8,16 @@
     tools:context=".ReserveActivity">
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/back_button"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="4dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/baseline_arrow_back_24"
         android:textColor="#fff"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toStartOf="@+id/textView" />
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -24,7 +26,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Reserve Room"
-        android:textColor="#2196F3"
+        android:textColor="#3E4761"
         android:textSize="35dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -181,7 +183,7 @@
         android:layout_marginTop="4dp"
         android:entries="@array/room_list"
         android:minHeight="48dp"
-
+        android:background="@drawable/rounded_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -238,7 +240,7 @@
         android:layout_height="40dp"
         android:layout_marginTop="4dp"
         android:entries="@array/activity_options"
-
+        android:background="@drawable/rounded_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />

@@ -29,13 +29,12 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
     private String roomNumber;
     private DatabaseReference mDatabaseRef;
     private ArrayList<String> mRoomNumbersList;
+    private Button btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve);
-
-
 
         Intent intent = getIntent();
         roomNumber = intent.getStringExtra("roomNumber");
@@ -60,7 +59,13 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         String weekDay = getDayOfWeek(date);
 
 
-
+        btn_back = (Button) findViewById(R.id.back_button);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         //Submit Button
         btnSubmit = (Button) findViewById(R.id.btn_submit);
@@ -68,8 +73,6 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 // Get the user's name from the EditText view
                 EditText editTextDate = findViewById(R.id.editTextDate);
@@ -89,6 +92,15 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                 String subjectCode = editTextSubjectCode.getText().toString();
                 String weekDay = getDayOfWeek(date);
 
+                // Check if the time inputs are in 24-hour format
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                try {
+                    Date startTime = timeFormat.parse(timeStart);
+                    Date endTime = timeFormat.parse(timeEnd);
+                } catch (ParseException e) {
+                    Toast.makeText(ReserveActivity.this, "Please enter the time in 24-hour format.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Check if all EditText fields are filled up
                 if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(roomNumber) || TextUtils.isEmpty(event)
@@ -106,15 +118,8 @@ public class ReserveActivity<Calendar> extends AppCompatActivity {
                     intent.putExtra("subjectCode", subjectCode);
                     startActivity(intent);
                 }
-
-
             }
-
-
         });
-
-
-
     }
 
     //METHODS HERE!!!
